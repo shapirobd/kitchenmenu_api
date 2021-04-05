@@ -36,7 +36,6 @@ app.get("/", (req, res, next) => {
 
 // 404 handler
 app.use(function (req, res, next) {
-	console.log(req);
 	const err = new ExpressError(`Not found`, 404);
 	return next(err);
 });
