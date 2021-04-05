@@ -5,7 +5,7 @@ let DB_URI = `postgresql://`;
 if (process.env.NODE_ENV === "test") {
 	DB_URI = `${DB_URI}/kitchen_menu_test`;
 } else if (process.env.NODE_ENV === "production") {
-	DB_URI = `${process.env.DATABASE_URL}?sslmode=require`;
+	DB_URI = `${process.env.DATABASE_URL}`;
 } else {
 	DB_URI = `${DB_URI}/kitchen_menu`;
 }
