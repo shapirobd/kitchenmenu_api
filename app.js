@@ -30,6 +30,10 @@ app.use("/auth", authRoutes);
 // 	res.sendFile(path.join(__dirname + "/front-end/public/index.html"));
 // });
 
+app.get("/", (req, res, next) => {
+	return res.json({});
+});
+
 // 404 handler
 app.use(function (req, res, next) {
 	console.log(req);
