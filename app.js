@@ -15,12 +15,12 @@ app.use(cors());
 app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
 
-if (process.env.NODE_ENV === "production") {
-	app.use(express.static(path.join(__dirname, "front-end/build")));
-	app.get("*", (req, res) => {
-		res.sendFile(path.join((__dirname = "front-end/build/index.html")));
-	});
-}
+// if (process.env.NODE_ENV === "production") {
+// app.use(express.static(path.join(__dirname, "front-end/build")));
+// app.get("*", (req, res) => {
+// 	res.sendFile(path.join((__dirname = "front-end/build/index.html")));
+// });
+// }
 
 // Have Node serve the files for our built React app
 // app.use(express.static(path.join(__dirname, "front-end/build")));
