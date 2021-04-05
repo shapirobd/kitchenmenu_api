@@ -140,7 +140,7 @@ class User {
                 first_name,
                 last_name
             FROM users
-            ORDER BY username;
+            ORDER BY username
         `
 		);
 		console.log("userRes: ", userRes);
