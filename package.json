@@ -22,6 +22,7 @@
 		"http-proxy-middleware": "^0.19.2",
 		"jsonschema": "^1.4.0",
 		"jsonwebtoken": "^8.5.1",
+		"node-pre-gyp": "^0.17.0",
 		"path": "^0.12.7",
 		"pg": "^8.5.1"
 	},
