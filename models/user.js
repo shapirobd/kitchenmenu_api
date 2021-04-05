@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { BCRYPT_WORK_FACTOR, SECRET_KEY, DB_URI } = require("../config");
 const { default: axios } = require("axios");
 const convertDate = require("../helpers/convertDate");
+const { getUserBookmarks, getUserEatenMeals } = require("../helpers/userModel");
 
 /**
  *  User model with the following static methods:
@@ -78,39 +79,9 @@ class User {
 		const user = userRes.rows[0];
 		if (user) {
 			if (await bcrypt.compare(password, user.password)) {
-				const bookmarksRes = await db.query(
-					`
-					SELECT meal_id
-					FROM bookmarks
-					WHERE username=$1
-					`,
-					[username]
-				);
-				const bookmarks = bookmarksRes.rows.map((bookmark) => bookmark.meal_id);
-				user.bookmarks = bookmarks;
-
-				const eatenMealsRes = await db.query(
-					`
-					SELECT um.meal_id AS id, um.username, um.date, m.protein, m.carbs, m.fat
-					FROM users_meals AS um
-					LEFT JOIN meals AS m
-					ON um.meal_id = m.id
-					WHERE um.username=$1
-					`,
-					[username]
-				);
-				const eatenMeals = {};
-				eatenMealsRes.rows.map((meal) => {
-					let date = convertDate(meal.date);
-					const { id, protein, carbs, fat } = meal;
-					eatenMeals[date]
-						? eatenMeals[date].push({ id, protein, carbs, fat })
-						: (eatenMeals[date] = [{ id, protein, carbs, fat }]);
-				});
-				user.eatenMeals = eatenMeals;
-
+				user.bookmarks = await getUserBookmarks(db, username);
+				user.eatenMeals = await getUserEatenMeals(db, username);
 				delete user.password;
-
 				return user;
 			}
 		}
@@ -153,40 +124,10 @@ class User {
             `,
 			[username]
 		);
+
 		const user = userRes.rows[0];
-
-		const bookmarksRes = await db.query(
-			`
-			SELECT meal_id
-			FROM bookmarks
-			WHERE username=$1
-			`,
-			[username]
-		);
-		const bookmarks = [];
-		bookmarksRes.rows.map((bookmark) => bookmarks.push(bookmark.meal_id));
-		user.bookmarks = bookmarks;
-
-		const eatenMealsRes = await db.query(
-			`
-					SELECT um.meal_id AS id, um.username, um.date, m.protein, m.carbs, m.fat
-					FROM users_meals AS um
-					LEFT JOIN meals AS m
-					ON um.meal_id = m.id
-					WHERE um.username=$1
-					`,
-			[username]
-		);
-		const eatenMeals = {};
-		eatenMealsRes.rows.map((meal) => {
-			let date = convertDate(meal.date);
-			const { id, protein, carbs, fat } = meal;
-			eatenMeals[date]
-				? eatenMeals[date].push({ id, protein, carbs, fat })
-				: (eatenMeals[date] = [{ id, protein, carbs, fat }]);
-		});
-		user.eatenMeals = eatenMeals;
-
+		user.bookmarks = await getUserBookmarks(db, username);
+		user.eatenMeals = await getUserEatenMeals(db, username);
 		return user;
 	}
 
@@ -215,39 +156,10 @@ class User {
 			`,
 			[...Object.values(data), username]
 		);
+
 		const user = userRes.rows[0];
-
-		const bookmarksRes = await db.query(
-			`
-					SELECT meal_id
-					FROM bookmarks
-					WHERE username=$1
-					`,
-			[username]
-		);
-		const bookmarks = bookmarksRes.rows.map((bookmark) => bookmark.meal_id);
-		user.bookmarks = bookmarks;
-
-		const eatenMealsRes = await db.query(
-			`
-					SELECT um.meal_id AS id, um.username, um.date, m.protein, m.carbs, m.fat
-					FROM users_meals AS um
-					LEFT JOIN meals AS m
-					ON um.meal_id = m.id
-					WHERE um.username=$1
-					`,
-			[username]
-		);
-		const eatenMeals = {};
-		eatenMealsRes.rows.map((meal) => {
-			let date = convertDate(meal.date);
-			const { id, protein, carbs, fat } = meal;
-			eatenMeals[date]
-				? eatenMeals[date].push({ id, protein, carbs, fat })
-				: (eatenMeals[date] = [{ id, protein, carbs, fat }]);
-		});
-		user.eatenMeals = eatenMeals;
-
+		user.bookmarks = await getUserBookmarks(db, username);
+		user.eatenMeals = await getUserEatenMeals(db, username);
 		return user;
 	}
 
