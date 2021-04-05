@@ -35,13 +35,7 @@ class User {
 		weight_goal,
 		calorie_goal,
 	}) {
-		console.log("USER MODEL REGISTER METHOD");
-		console.log("db.query: ", db.query);
-		console.log("DB_URI", DB_URI);
-		console.log(process.env.DATABASE_URL);
-
 		const hashedPwd = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
-		console.log("hashedPwd: ", hashedPwd);
 		const results = await db.query(
 			`
             INSERT INTO users (username, password, email, first_name, last_name, weight, weight_goal, calorie_goal)
@@ -59,7 +53,6 @@ class User {
 				+calorie_goal,
 			]
 		);
-		console.log("results: ", results);
 		const user = results.rows[0];
 		user.bookmarks = [];
 		user.eatenMeals = {};
@@ -74,8 +67,6 @@ class User {
 	 * @return {Object} User object (contains username, email, first_name, last_name, weight, weight_goal, calorie_goal, * 					bookmarks, eatenMeals)
 	 */
 	static async authenticate(username, password) {
-		console.log("username: ", username);
-		console.log("password: ", password);
 		const userRes = await db.query(
 			`
             SELECT * 
@@ -84,7 +75,6 @@ class User {
         `,
 			[username]
 		);
-		console.log("userRes: ", userRes);
 		const user = userRes.rows[0];
 		if (user) {
 			if (await bcrypt.compare(password, user.password)) {
@@ -132,7 +122,6 @@ class User {
 	 * @return {Array} Array of user objects (each object containing username, email, first_name, last_name)
 	 */
 	static async findAll() {
-		console.log("USER METHOD - findAll");
 		const userRes = await db.query(
 			`
             SELECT username,
@@ -143,7 +132,6 @@ class User {
             ORDER BY username;
         `
 		);
-		console.log("userRes: ", userRes);
 
 		return userRes.rows;
 	}
