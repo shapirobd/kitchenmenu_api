@@ -132,10 +132,9 @@ class User {
 	 * @return {Array} Array of user objects (each object containing username, email, first_name, last_name)
 	 */
 	static async findAll() {
-		try {
-			console.log("USER METHOD - findAll");
-			const userRes = await db.query(
-				`
+		console.log("USER METHOD - findAll");
+		const userRes = await db.query(
+			`
             SELECT username,
                 email,
                 first_name,
@@ -143,13 +142,10 @@ class User {
             FROM users
             ORDER BY username;
         `
-			);
-			console.log("userRes: ", userRes);
+		);
+		console.log("userRes: ", userRes);
 
-			return userRes.rows;
-		} catch (e) {
-			console.log(e);
-		}
+		return userRes.rows;
 	}
 
 	/**
