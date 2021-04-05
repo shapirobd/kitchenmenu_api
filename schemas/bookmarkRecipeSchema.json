@@ -1,0 +1,34 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema",
+	"$id": "http://example.com/example.json",
+	"type": "object",
+	"title": "The root schema",
+	"description": "The root schema comprises the entire JSON document.",
+	"default": {},
+	"examples": [
+		{
+			"username": "username1",
+			"recipeId": 716627
+		}
+	],
+	"required": ["username", "recipeId"],
+	"properties": {
+		"username": {
+			"$id": "#/properties/username",
+			"type": "string",
+			"title": "The username schema",
+			"description": "An explanation about the purpose of this instance.",
+			"default": "",
+			"examples": ["username1"]
+		},
+		"recipeId": {
+			"$id": "#/properties/recipeId",
+			"type": "integer",
+			"title": "The recipeId schema",
+			"description": "An explanation about the purpose of this instance.",
+			"default": 0,
+			"examples": [716627]
+		}
+	},
+	"additionalProperties": true
+}
