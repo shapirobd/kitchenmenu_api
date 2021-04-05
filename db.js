@@ -6,6 +6,10 @@ const { DB_URI } = require("./config");
 // });
 let db = new Client({
 	connectionString: DB_URI,
+	dialect: "postgres",
+	dialectOptions: {
+		ssl: { require: true },
+	},
 });
 
 db.connect();
