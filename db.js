@@ -4,12 +4,24 @@ const { DB_URI } = require("./config");
 // let db = new Client({
 // 	connectionString: DB_URI,
 // });
-let db = new Client({
+
+const clientSettings = {
 	connectionString: DB_URI,
-	// ssl: {
-	// 	rejectUnauthorized: false,
-	// },
-});
+};
+
+if (process.env.NODE_ENV === "production") {
+	clientSettings.ssl = {
+		rejectUnauthorized: false,
+	};
+}
+
+// let db = new Client({
+// 	connectionString: DB_URI,
+// 	ssl: {
+// 		rejectUnauthorized: false,
+// 	},
+// });
+let db = new Client(clientSettings);
 
 db.connect();
 
