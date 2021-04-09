@@ -237,6 +237,7 @@ class User {
 	 * @param {String} username The username of the user whose eaten meals we are adding to
 	 * @param {Number} recipeId The id of the recipe being added
 	 * @param {String} date The date that the user ate this meal
+	 * @param {Object} nutrients Contains the amount of calories, fat, carbs and protein
 	 * @return {Object} Object containing success message
 	 */
 	static async addEatenMeal(username, recipeId, date, nutrients) {
