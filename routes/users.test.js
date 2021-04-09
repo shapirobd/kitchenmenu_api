@@ -303,6 +303,18 @@ describe("POST /removeEatenMeal route", () => {
 	});
 });
 
+describe("DELETE /users/:username route", () => {
+	it("should remove a user from the database", async () => {
+		const resp = await request(app)
+			.delete(`/users/${user1.username}`)
+			.send({ _token: token });
+		expect(resp.body).toEqual({ message: "User deleted" });
+		const userResp = await request(app).get(`/users/${user1.username}`);
+		expect(userResp.status).toEqual(404);
+		expect(userResp.body.message).toEqual("User not found");
+	});
+});
+
 afterAll(async () => {
 	await db.end();
 });

@@ -153,6 +153,10 @@ router.post(
 	}
 );
 
+/**
+ *  Removes a user from the database
+ * @return {Object} Object containing success message
+ */
 router.delete("/:username", authenticateJWT, async function (req, res, next) {
 	try {
 		const resp = await User.deleteUser(req.params.username);

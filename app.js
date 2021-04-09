@@ -15,21 +15,6 @@ app.use(cors());
 app.use("/users", usersRoutes);
 app.use("/auth", authRoutes);
 
-// if (process.env.NODE_ENV === "production") {
-// app.use(express.static(path.join(__dirname, "front-end/build")));
-// app.get("*", (req, res) => {
-// 	res.sendFile(path.join((__dirname = "front-end/build/index.html")));
-// });
-// }
-
-// Have Node serve the files for our built React app
-// app.use(express.static(path.join(__dirname, "front-end/build")));
-
-// All other GET requests not handled before will return our React app
-// app.get("*", (req, res) => {
-// 	res.sendFile(path.join(__dirname + "/front-end/public/index.html"));
-// });
-
 app.get("/", (req, res, next) => {
 	return res.json({});
 });
@@ -54,7 +39,9 @@ app.listen(port, () => {
 	console.log(`Server listening on port ${port}.`);
 });
 
-module.exports = function (app) {
-	// add other server routes to path array
-	app.use(proxy(["/users/register"], { target: "http://localhost:5000" }));
-};
+// module.exports = function (app) {
+// 	// add other server routes to path array
+// 	app.use(proxy(["/users/register"], { target: "http://localhost:5000" }));
+// };
+
+module.exports = app;

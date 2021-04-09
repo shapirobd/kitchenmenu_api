@@ -116,6 +116,29 @@ describe("POST /login route", () => {
 	});
 });
 
+describe("GET /:keyword/:value route", () => {
+	it("should return object with key of isTaken and value of true if there is a user with the given username", async () => {
+		await User.register(user);
+		const resp = await request(app).get(`/auth/username/${user.username}`);
+		expect(resp.body).toEqual({ isTaken: true });
+	});
+	it("should return object with key of isTaken and value of true if there is a user with the given email", async () => {
+		await User.register(user);
+		const resp = await request(app).get(`/auth/email/${user.email}`);
+		expect(resp.body).toEqual({ isTaken: true });
+	});
+	it("should return object with key of isTaken and value of false if there is not a user with the given username", async () => {
+		await User.register(user);
+		const resp = await request(app).get(`/auth/username/${user.username}123`);
+		expect(resp.body).toEqual({ isTaken: false });
+	});
+	it("should return object with key of isTaken and value of false if there is not a user with the given email", async () => {
+		await User.register(user);
+		const resp = await request(app).get(`/auth/email/${user.email}123`);
+		expect(resp.body).toEqual({ isTaken: false });
+	});
+});
+
 afterAll(async () => {
 	await db.end();
 });

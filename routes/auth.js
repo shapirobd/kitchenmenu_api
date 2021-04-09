@@ -60,4 +60,27 @@ router.post("/login", async function (req, res, next) {
 	}
 });
 
+/**
+ * GET route to validate a given username and password
+ * If successful, return object containing user's information
+ * If unsuccessful, throw 404 error
+ *
+ * req.params should include:
+ * - keyword (either "username" or "email")
+ * - value (the value of the username/email that we are checking)
+ */
+router.get("/:keyword/:value", async function (req, res, next) {
+	try {
+		const { keyword, value } = req.params;
+		const user = await User.isFieldTaken(keyword, value);
+		if (user) {
+			return res.json({ isTaken: true });
+		} else {
+			return res.json({ isTaken: false });
+		}
+	} catch (e) {
+		return next(e);
+	}
+});
+
 module.exports = router;

@@ -5,6 +5,7 @@ const { BCRYPT_WORK_FACTOR, SECRET_KEY, DB_URI } = require("../config");
 const { default: axios } = require("axios");
 const convertDate = require("../helpers/convertDate");
 const { getUserBookmarks, getUserEatenMeals } = require("../helpers/userModel");
+const ExpressError = require("../expressError");
 
 /**
  *  User model with the following static methods:
@@ -126,6 +127,9 @@ class User {
 		);
 
 		const user = userRes.rows[0];
+		if (!user) {
+			throw new ExpressError("User not found", 404);
+		}
 		user.bookmarks = await getUserBookmarks(db, username);
 		user.eatenMeals = await getUserEatenMeals(db, username);
 		return user;
@@ -289,6 +293,11 @@ class User {
 		return { message: "Meal deleted" };
 	}
 
+	/**
+	 * Removes a user and all of their bookmarks and eaten meals from the deatabase
+	 * @param {String} username
+	 * @returns success message upon deletion
+	 */
 	static async deleteUser(username) {
 		await db.query(
 			`
@@ -309,6 +318,19 @@ class User {
 			[username]
 		);
 		return { message: "User deleted" };
+	}
+
+	/**
+	 * Searches the database for a user with an email/username (keyword) with a given value (value)
+	 * @param {String} keyword - either "username" or "email"
+	 * @param {String} value - the value of the username/email that we are checking
+	 * @returns the user that was found, or undefined if there was no user found
+	 */
+	static async isFieldTaken(keyword, value) {
+		const results = await db.query(`SELECT * FROM users WHERE ${keyword}=$1`, [
+			value,
+		]);
+		return results.rows[0];
 	}
 }
 
