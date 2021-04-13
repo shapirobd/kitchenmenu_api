@@ -16,7 +16,16 @@ This is the back-end API for KitchenMenu - it is used to perform CRUD operations
 npm install
 ```
 
-[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#usage)
+## ➤ Running Tests
+
+```
+jest user.test.js
+jest auth.test.js
+jest users.test.js
+```
+
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#features)
+
 
 ## ➤ Endpoints
 
